@@ -445,7 +445,7 @@ void Config::requestMachine(string newArch, string newRomSet) {
             MemESP::rom[0] = (uint8_t *) gb_rom_0_48k_es;
         else if (romSet48 == "48Kcs") {
             MemESP::rom[0] = (uint8_t *) gb_rom_0_48k_custom;
-            MemESP::rom[0] += 8;
+        //    MemESP::rom[0] += 8;
         }
 
     } else if (arch == "128K") {
