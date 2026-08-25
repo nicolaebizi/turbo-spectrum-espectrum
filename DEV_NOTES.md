@@ -73,3 +73,44 @@ Continuăm de aici, fără să schimbăm ce funcționează deja:
 2. stabilim cum trebuie introdus `ts_boot.bin` în ROM-ul custom;
 3. verificăm pornirea ca Spectrum 48K fără modificări suplimentare;
 4. abia apoi modificăm emularea hardware Turbo Spectrum, dacă este necesar.
+
+25 06 
+
+## Turbo Spectrum — FE Memory Mapping
+
+Turbo Spectrum memory mapping is controlled by `FE[6:5]`.
+
+The reference VHDL mapping is:
+
+```vhdl
+case FE_CFG(6 downto 5) is
+
+  when "00" =>
+    case cpu_a(15 downto 14) is
+      when "01" => ram_page <= "000";
+      when "10" => ram_page <= "001";
+      when "11" => ram_page <= "101";
+      when others => ram_page <= "000";
+    end case;
+
+  when "01" =>
+    case cpu_a(15 downto 14) is
+      when "00" => ram_page <= "110";
+      when "01" => ram_page <= "000";
+      when "10" => ram_page <= "001";
+      when "11" => ram_page <= "101";
+      when others => ram_page <= "000";
+    end case;
+
+  when "11" =>
+    case cpu_a(15 downto 14) is
+      when "00" => ram_page <= "001";
+      when "01" => ram_page <= "101";
+      when "10" => ram_page <= "110";
+      when "11" => ram_page <= "000";
+      when others => ram_page <= "000";
+    end case;
+
+end case;
+
+
